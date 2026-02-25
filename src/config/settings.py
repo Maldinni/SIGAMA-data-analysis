@@ -12,6 +12,7 @@ load_dotenv(BASE_DIR / "keys.env")
 
 BASEPATH = Path(os.getenv("SIGAMA_BASEPATH")) #caminho padrão do servidor para acesso e manipulação das pastas e arquivos do projeto, criar e alterar o arquivo .env para conter o SIGAMA_BASEPATH(caminho)
 LOCAL_BASEPATH = Path(os.getenv("LOCAL_BASEPATH"))
+SALT = Path(os.getenv("SALT_HASH_KEY"))
 
 if not BASEPATH:
     raise RuntimeError("BASEPATH não definido no .env")

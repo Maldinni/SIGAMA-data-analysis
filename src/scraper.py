@@ -1,7 +1,7 @@
 from pipeline.build_dataset import build_dataset
 from config.settings import OUTPUT_DIR
 
-def main():
+def scraper():
     df = build_dataset()
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -10,4 +10,4 @@ def main():
     print("Dataset gerado com sucesso!")
 
 if __name__ == "__main__":
-    main()
+    scraper()
