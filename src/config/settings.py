@@ -23,5 +23,6 @@ if not LOCAL_BASEPATH:
 DOCUMENTOS_DIR = BASEPATH / "Documentos Solicitaçoes de Acesso"
 CONTROLE_EXCEL = BASEPATH / "Controle de Solicitação.xlsx"
 OUTPUT_DIR = LOCAL_BASEPATH / "Documents"
+CSV_INPUT_DIR = OUTPUT_DIR / "dataset_normalizado.csv"
 
 TIMEOUT = 60
