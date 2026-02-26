@@ -50,9 +50,7 @@ def load_all_controles():
         df.columns = ["nome", "cpf/cnpj", "status"]
 
         # remove headers repetidos internos
-        df = df[~df["nome"].str.strip().str.upper().eq("NOME")]
-        df = df[~df["nome"].str.strip().eq("Italo Marcos De Sousa Barbosa")]
-        df = df[~df["nome"].str.strip().eq("F P J Pecuaria Ltda")]       
+        df = df[~df["nome"].str.strip().str.upper().eq("NOME")]       
 
         df["cpf/cnpj"] = (
             df["cpf/cnpj"]
@@ -63,7 +61,7 @@ def load_all_controles():
 
         # cria tipo_de_conta depois
         df["tipo_de_conta"] = df["cpf/cnpj"].apply(
-            lambda x: "Empresa" if len(x) == 14 else "Pessoa Física" if len(x) == 11 else "Inválido"
+            lambda x: "Empresa" if len(x) > 11 else "Pessoa Física"
         )
 
         ano, mes, dia = extrair_data_da_pasta(file)
