@@ -23,5 +23,5 @@ def anonymizer():
     print("Dataset anonimizado com sucesso!")
 
 if __name__ == "__main__":
-    #scraper()
+    scraper()
     anonymizer()
