@@ -1,5 +1,5 @@
 from ingestion.load_multiple_controles import load_all_controles
-from processing.normalization import normalize_columns
+#from processing.normalization import normalize_columns
 from processing.anonymization import anonimizar_cpf
 from cleaning.clean_data import clean_dataset
 

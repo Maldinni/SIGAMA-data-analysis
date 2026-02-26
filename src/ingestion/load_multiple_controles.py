@@ -51,6 +51,8 @@ def load_all_controles():
 
         # remove headers repetidos internos
         df = df[~df["nome"].str.strip().str.upper().eq("NOME")]
+        df = df[~df["nome"].str.strip().eq("Italo Marcos De Sousa Barbosa")]
+        df = df[~df["nome"].str.strip().eq("F P J Pecuaria Ltda")]       
 
         df["cpf/cnpj"] = (
             df["cpf/cnpj"]
