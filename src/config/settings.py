@@ -24,5 +24,8 @@ DOCUMENTOS_DIR = BASEPATH / "Documentos Solicitaçoes de Acesso"
 CONTROLE_EXCEL = BASEPATH / "Controle de Solicitação.xlsx"
 OUTPUT_DIR = LOCAL_BASEPATH / "data"
 CSV_INPUT_DIR = OUTPUT_DIR / "dataset_normalizado.csv"
+OUTPUT_TRAIN = OUTPUT_DIR / "train_dataset.csv"
+OUTPUT_TEST = OUTPUT_DIR / "test_dataset.csv"
+RAW_CSV_INPUT_DIR = OUTPUT_DIR / "dataset_normalizado_anonimizado.csv"
 
 TIMEOUT = 60

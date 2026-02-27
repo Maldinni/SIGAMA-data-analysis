@@ -1,6 +1,7 @@
 from pipeline.build_dataset import build_dataset, build_dataset_anonymized
 from config.settings import OUTPUT_DIR, CSV_INPUT_DIR
 from utils.load_data import load_csv
+from processing.train_split import prepare_train_test
 
 def scraper():
     df = build_dataset()
@@ -25,3 +26,4 @@ def anonymizer():
 if __name__ == "__main__":
     #scraper()
     anonymizer()
+    prepare_train_test()
