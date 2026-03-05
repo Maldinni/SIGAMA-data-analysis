@@ -64,3 +64,47 @@ def clean_first_access_dataset(df):
     df = df.dropna(how="all")
 
     return df
+
+def clean_first_access_llm_dataset(df):
+    # Remove linhas de placeholders
+    df = df[~df["ds_observacao"].str.strip().eq("Teste")]
+    df = df[~df["ds_observacao"].str.strip().eq("teste")]
+    df = df[~df["ds_observacao"].str.strip().eq("teste para reativar perfil")]
+    df = df[~df["ds_observacao"].str.strip().eq("teste de permissão.")]
+    df = df[~df["ds_observacao"].str.strip().eq("Teste para cadastro sem usuário.")]
+    df = df[~df["ds_observacao"].str.strip().eq("Teste para regularizar usuário")]
+    df = df[~df["ds_observacao"].str.strip().eq("teste para criação do usuário")]
+    df = df[~df["ds_observacao"].str.strip().eq("teste para criação do usuário.")]
+    df = df[~df["ds_observacao"].str.strip().eq("Teste para criação de usuário")]
+    df = df[~df["ds_observacao"].str.strip().eq("teste para criação de usuário. Estava sem CNPJ")]
+    df = df[~df["ds_observacao"].str.strip().eq("Solicitação para teste de usuário.")]
+    df = df[~df["ds_observacao"].str.strip().eq("Acesso Liberado!")]
+    df = df[~df["ds_observacao"].str.strip().eq("Acesso Liberado !")]
+    df = df[~df["ds_observacao"].str.strip().eq("acesso Liberado!")]
+    df = df[~df["ds_observacao"].str.strip().eq("acesso Liberado.")]
+    df = df[~df["ds_observacao"].str.strip().eq("acesso liberado")]
+    df = df[~df["ds_observacao"].str.strip().eq("acesso liberado!")]
+    df = df[~df["ds_observacao"].str.strip().eq("Acesso LIberado!")]
+    df = df[~df["ds_observacao"].str.strip().eq("Acesso Liberado.")]
+    df = df[~df["ds_observacao"].str.strip().eq("Acesso Liberado")]
+    df = df[~df["ds_observacao"].str.strip().eq("Acesso liberado")]
+    df = df[~df["ds_observacao"].str.strip().eq("Acesso liberado !")]
+    df = df[~df["ds_observacao"].str.strip().eq("Acesso liberado,")]
+    df = df[~df["ds_observacao"].str.strip().eq("Acesso liberado.")]
+    df = df[~df["ds_observacao"].str.strip().eq("ACESSO LIBERADO!")]
+    df = df[~df["ds_observacao"].str.strip().eq("Acesso liberado!")]
+    df = df[~df["ds_observacao"].str.strip().eq("Liberado")]
+    df = df[~df["ds_observacao"].str.strip().eq("liberado")]
+    df = df[~df["ds_observacao"].str.strip().eq("Aceso liberado.")]
+    df = df[~df["ds_observacao"].str.strip().eq("Aceso Liberado.")]
+    df = df[~df["ds_observacao"].str.strip().eq("Aceso Liberado!")]
+    df = df[~df["ds_observacao"].str.strip().eq("Acessp liberado")]
+    df = df[~df["ds_observacao"].str.strip().eq("Aesso liberado")]
+
+    # Remove as strings que podem vir vazias
+    df = df.replace(r"^\s*$", None, regex=True)
+
+    # Remove NULL
+    df = df.dropna(subset=["ds_observacao"])
+
+    return df

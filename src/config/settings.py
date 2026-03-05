@@ -33,5 +33,5 @@ RAW_FIRST_ACCESS_FILE = OUTPUT_DIR / "db" / "primeiro_acesso_historico_202603041
 RAW_OPEN_TICKET_FILE = OUTPUT_DIR / "db" / "chamado_abrir_202603041306.csv"
 RAW_HISTORY_TICKET_FILE = OUTPUT_DIR / "db" / "chamado_historico_202603041306.csv"
 CLEANED_USERS_CSV_INPUT_DIR = OUTPUT_DIR / "db" / "usuario_202603050949.csv"
-
+CLEANED_FIRST_ACCESS_FILE = OUTPUT_DIR / "processed" / "primeiro_acesso_historico_202603041232_limpo.csv"
 TIMEOUT = 60
