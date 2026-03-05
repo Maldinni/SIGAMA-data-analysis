@@ -1,7 +1,7 @@
 from ingestion.load_multiple_controles import load_all_controles
 from processing.normalization import normalize_columns
 from processing.anonymization import anonimizar_cpf
-from cleaning.clean_data import clean_dataset, clean_users_dataset
+from cleaning.clean_data import clean_dataset, clean_users_dataset, clean_first_access_dataset
 
 #def build_dataset():
 #    df_original = load_all_controles()
@@ -11,8 +11,9 @@ from cleaning.clean_data import clean_dataset, clean_users_dataset
 
 def build_db_dataset(df):
     df = normalize_columns(df)
+    df_final = clean_first_access_dataset(df)
 
-    return df
+    return df_final
 
 def build_dataset_anonymized(dataset):
     df = dataset

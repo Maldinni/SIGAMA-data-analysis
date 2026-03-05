@@ -52,3 +52,15 @@ def clean_users_dataset(df):
     df = df.dropna(how="all")
 
     return df
+
+def clean_first_access_dataset(df):
+    # Remove a coluna "arquivo_origem" e "nome" ja que nao irei utilizá-las
+    df = df.drop(columns=["id_pessoa_responsavel"], errors="ignore")
+
+    # Remove as strings que podem vir vazias
+    df = df.replace(r"^\s*$", None, regex=True)
+
+    # Remove NULL
+    df = df.dropna(how="all")
+
+    return df
