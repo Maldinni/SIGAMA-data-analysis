@@ -53,6 +53,30 @@ def clean_users_dataset(df):
 
     return df
 
+def clean_open_ticket_dataset(df):
+    # Remove a coluna "arquivo_origem" e "nome" ja que nao irei utilizá-las
+    df = df.drop(columns=["ds_imagembase64"], errors="ignore")
+    df = df.drop(columns=["ds_assistencia"], errors="ignore")
+    df = df.drop(columns=["ds_ordem_servico"], errors="ignore")
+    df = df.drop(columns=["tp_area"], errors="ignore")
+    df = df.drop(columns=["id_lotacao_responsavel"], errors="ignore")
+    df = df.drop(columns=["nu_jira"], errors="ignore")
+    df = df.drop(columns=["titulo_problema"], errors="ignore")
+    df = df.drop(columns=["id_arquivo"], errors="ignore")
+    df = df.drop(columns=["id_pessoa_tec"], errors="ignore")
+    df = df.drop(columns=["id_tipo_contato"], errors="ignore")
+    df = df.drop(columns=["id_patrimonio"], errors="ignore")
+    df = df.drop(columns=["id_pessoa"], errors="ignore")
+
+    # Remove as strings que podem vir vazias
+    df = df.replace(r"^\s*$", None, regex=True)
+
+    # Remove NULL
+    df = df.dropna(subset=["ds_problema"])
+
+    return df
+
+
 def clean_first_access_dataset(df):
     # Remove a coluna "arquivo_origem" e "nome" ja que nao irei utilizá-las
     df = df.drop(columns=["id_pessoa_responsavel"], errors="ignore")
