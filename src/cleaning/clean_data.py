@@ -76,6 +76,23 @@ def clean_open_ticket_dataset(df):
 
     return df
 
+def clean_history_ticket_dataset(df):
+    # Remove a coluna "arquivo_origem" e "nome" ja que nao irei utilizá-las
+    df = df.drop(columns=["id_chamado"], errors="ignore")
+    df = df.drop(columns=["id_responsavel"], errors="ignore")
+    df = df.drop(columns=["ds_complementar"], errors="ignore")
+    df = df.drop(columns=["id_pessoa_tec"], errors="ignore")
+    df = df.drop(columns=["ds_atualizacao"], errors="ignore")
+    df = df.drop(columns=["id_arquivo"], errors="ignore")
+
+    # Remove as strings que podem vir vazias
+    df = df.replace(r"^\s*$", None, regex=True)
+
+    # Remove NULL
+    df = df.dropna(how="all")
+
+    return df
+
 
 def clean_first_access_dataset(df):
     # Remove a coluna "arquivo_origem" e "nome" ja que nao irei utilizá-las
