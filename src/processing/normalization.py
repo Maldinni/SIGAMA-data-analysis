@@ -1,8 +1,8 @@
 import pandas as pd
-from config.settings import CONTROLE_EXCEL
+#from config.settings import CONTROLE_EXCEL
 
-df = pd.read_excel(CONTROLE_EXCEL, header=None)
-print(df.head(10))
+#df = pd.read_excel(CONTROLE_EXCEL, header=None)
+#print(df.head(10))
 
 def normalize_columns(df: pd.DataFrame) -> pd.DataFrame:
     print(df.columns.tolist())

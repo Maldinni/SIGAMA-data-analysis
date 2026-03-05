@@ -1,5 +1,5 @@
 from pipeline.build_dataset import build_dataset, build_dataset_anonymized
-from config.settings import OUTPUT_DIR, CSV_INPUT_DIR
+from config.settings import CLEANED_USERS_CSV_INPUT_DIR, OUTPUT_DIR, CSV_INPUT_DIR
 from utils.load_data import load_csv
 from processing.train_split import prepare_train_test
 
@@ -12,8 +12,8 @@ def scraper():
     print("Dataset gerado com sucesso!")
 
 def anonymizer():
-    print(CSV_INPUT_DIR)
-    df_normalized = load_csv(CSV_INPUT_DIR)
+    print(CLEANED_USERS_CSV_INPUT_DIR)
+    df_normalized = load_csv(CLEANED_USERS_CSV_INPUT_DIR)
     print(df_normalized)
 
     df = build_dataset_anonymized(df_normalized)

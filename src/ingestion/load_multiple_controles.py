@@ -1,6 +1,6 @@
 from pathlib import Path
 import pandas as pd
-from config.settings import DOCUMENTOS_DIR
+#from config.settings import DOCUMENTOS_DIR
 
 def find_controle_files() -> list[Path]:
     arquivos = []
