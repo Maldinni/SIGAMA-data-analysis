@@ -77,7 +77,7 @@ def construct_knn_graph(embeddings, k):
 
     for i in tqdm(range(num_points)):
         for neighbor_idx, distance in zip(indices[i], distances[i]):
-            if neighbor_idx != i and distance >= SIM_THRESHOLD:
+            if neighbor_idx != i:
                 edge = tuple(sorted((i, neighbor_idx)))
                 edge_set.add((edge, distance))
 
