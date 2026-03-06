@@ -40,3 +40,39 @@ def determine_output_filename(output_dir: str, ext: str = "csv") -> Tuple[str, i
     last = existing[-1].stem
     shard_id = int(last.split("_")[1]) + 1
     return str(out / f"shard_{shard_id:04d}.{ext}"), shard_id
+
+def save_to_hdf5(news_list, filename, disable_tqdm=False):
+    """
+    Save dataset to HDF5.
+
+    Parameters:
+    - news_list: list of dicts or objects with attributes
+    - filename: str
+    """
+
+    with h5py.File(filename, 'w') as file:
+
+        n = len(news_list)
+
+        # String datasets
+        texts = file.create_dataset('text', (n,),
+                                      dtype=h5py.string_dtype())
+
+        # Optional embedding group (if you generate later)
+        embedding_group = file.create_group('embeddings')
+
+        for i, article in tqdm(enumerate(news_list),
+                               total=n,
+                               disable=disable_tqdm):
+
+            texts[i] = str(article["text"]) if article["text"] else ""
+
+            # Se tiver embedding
+            if "embedding" in article and article["embedding"] is not None:
+                embedding_group.create_dataset(
+                    str(i),
+                    data=np.array(article["embedding"], dtype=np.float32),
+                    dtype='f'
+                )
+            else:
+                embedding_group.create_dataset(str(i), shape=(0,), dtype='f')

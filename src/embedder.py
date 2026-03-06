@@ -1,11 +1,13 @@
 import glob
 import os
 import time
+import pickle
+from pathlib import Path
 from tqdm import tqdm
 import pandas as pd
 
 from utils.parsing import parse_args, load_config
-from utils.load_data import ensure_dirs, determine_output_filename
+from utils.load_data import ensure_dirs, determine_output_filename, save_to_hdf5
 from utils.checkpoints import load_processed_documents, save_processed_documents
 from utils.embedding import unpack_embedding_parameters, save_embeddings, SentenceTransformerEmbeddings
 
@@ -27,9 +29,7 @@ def main():
 
     cleaned_directory = f'{cfg["paths"]["processed"]}'
     embedded_directory = f'{cfg["paths"]["raw"]}/embedded'
-
-    print(f"Diretório de arquivos processados: {cleaned_directory}")
-    print(f"Diretório de arquivos embedados: {embedded_directory}")
+    shard_directory = f'{cfg["paths"]["raw"]}/shards_h5'
 
     if not os.path.exists(cleaned_directory):
         print(f"Erro: O diretório {cleaned_directory} não existe.")
@@ -37,7 +37,7 @@ def main():
         cleaned_files = glob.glob(os.path.join(cleaned_directory, 'primeiro_acesso_historico_202603041232_limpo_llm.csv'))
         print(f"Arquivos encontrados no diretório de processados: {cleaned_files}")
 
-    # Se não houver arquivos CSV, levante um erro informativo
+    # Se não houver arquivos CSV, aparece um erro
     if not cleaned_files:
         raise FileNotFoundError(f"Nenhum arquivo CSV encontrado no diretório {cleaned_directory}")
     dfs = []
@@ -52,7 +52,7 @@ def main():
         batch_size=batch_size
     )
 
-    processed_path = f'{paths["checkpoints"]}/processed_embedded_urls.json'
+    processed_path = f'{paths["checkpoints"]}/processed_embedded_documents.json'
     processed = load_processed_documents(processed_path)
 
     # Remove already embedded articles from the dataframe
@@ -60,6 +60,9 @@ def main():
 
     # Ensure embedding output directory exists
     os.makedirs(embedded_directory, exist_ok=True)
+
+    # Ensure converted embed output directory exists
+    os.makedirs(shard_directory, exist_ok=True)
 
     output_file, shard_id = determine_output_filename(
         embedded_directory, 'pkl')
@@ -94,6 +97,36 @@ def main():
 
         # Wait before next batch to avoid overloading resources
         time.sleep(sleep_time)
+
+    embedded_directory = Path(embedded_directory)
+    shard_directory = Path(shard_directory)
+
+    for pkl_file in embedded_directory.glob("*.pkl"):
+
+        print(f"Convertendo {pkl_file.name}...")
+
+        # Carrega pickle
+        with open(pkl_file, "rb") as f:
+            obj = pickle.load(f)
+
+        print(type(obj))
+        print(obj.__dict__.keys())
+        # Define nome do .h5
+        h5_filename = shard_directory / (pkl_file.stem + ".h5")
+
+        # Salva em HDF5
+        news_list = []
+
+        for i in range(len(obj.texts)):
+            article = {
+                "text": obj.texts[i],
+                "embedding": obj.embeddings[i] if i < len(obj.embeddings) else None
+            }
+            news_list.append(article)
+
+        save_to_hdf5(news_list, str(h5_filename))
+
+    print("Conversão finalizada.")
 
 if __name__ == "__main__":
     main()
