@@ -76,3 +76,60 @@ def save_to_hdf5(news_list, filename, disable_tqdm=False):
                 )
             else:
                 embedding_group.create_dataset(str(i), shape=(0,), dtype='f')
+
+def load_embeddings_from_hdf5(filename):
+    """
+    Load embeddings from a single HDF5 shard.
+
+    Returns:
+    - embeddings: np.ndarray (N, D)
+    - urls: list[str]
+    """
+
+    with h5py.File(filename, "r") as f:
+
+        # Carrega URLs (identificador)
+        texts = f["text"][:]
+        texts = [
+            u.decode("utf-8") if isinstance(u, bytes) else u
+            for u in texts
+        ]
+
+        total_articles = len(texts)
+
+        # Carrega embeddings
+        embedding_group = f["embeddings"]
+
+        # Pega dimensão do primeiro embedding
+        first_embedding = np.array(embedding_group["0"])
+        dim = first_embedding.shape[0]
+
+        embeddings = np.zeros((total_articles, dim), dtype=np.float32)
+
+        for i in range(total_articles):
+            embeddings[i] = np.array(embedding_group[str(i)])
+
+    return embeddings, texts
+
+def load_embedding_shards(embeddings_files, disable_tqdm=False):
+    """
+    Load embeddings from multiple shards and concatenate them into a single array. Also return the associated PMIDs.
+
+    Parameters:
+    - embeddings_files: List of strings, the paths to the embeddings files.
+    - disable_tqdm: bool
+
+    Returns:
+    - embeddings: np.array, the concatenated embeddings.
+    - urls: List of strings, the URLs of the articles.
+    """
+
+    embeddings = []
+    texts = []
+
+    for file in tqdm(embeddings_files, disable=disable_tqdm):
+        embeddings_shard, texts_shard = load_embeddings_from_hdf5(file)
+        embeddings.append(embeddings_shard)
+        texts.extend(texts_shard)
+
+    return np.concatenate(embeddings, axis=0), texts
