@@ -7,17 +7,15 @@ from pathlib import Path
 
 from langchain_ollama import ChatOllama
 from langchain_core.prompts import PromptTemplate
-from langchain_core.output_parsers.json import SimpleJsonOutputParser
 
-from utils.parsing import parse_args, load_config
+from utils.parsing import parse_args, load_config, extract_cluster_id, load_and_parse_cluster_file
 from utils.hypersphere import get_representative_articles, get_centroids
 from utils.load_data import ensure_dirs, load_embedding_shards, align_to_df
 
-def truncate(text, max_chars=1300):
+def truncate(text, max_chars=4000):
     return text[:max_chars]
 
 def main():
-    os.chdir('..')
 # Define prompt templates
     DEFINITION_PROMPT = PromptTemplate(
         input_variables=["articles"],
@@ -40,6 +38,10 @@ def main():
                 Descrição:
                 1-2 frases.
 
+                Foco: 
+                Escolha 1-3 das opções abaixo.
+                Termo de compromisso | Identidade | RG | Comprovante de endereço | Email | Assinatura | Procuração | CNPJ | Documento ilegível | Documento incompleto                
+
                 Textos:
                 {articles}
                 """,
@@ -54,7 +56,7 @@ def main():
     required_fields = cfg['definition']['required_fields']
 
     llm = ChatOllama(
-        model="mistral:7b",
+        model="qwen2.5:7b",
         temperature=cfg['llm']['temperature']
     )
 
@@ -140,5 +142,85 @@ def main():
 
         print(f"Cluster {label} salvo.")
 
+def json_converter():
+
+    args = parse_args()
+    cfg = load_config(args)
+
+    paths = cfg["paths"]
+    ensure_dirs(paths["raw"], paths["processed"], paths["checkpoints"], paths["output"])
+
+    clusters_directory = f'{cfg["paths"]["output"]}'
+    output_directory = f'{cfg["paths"]["processed"]}'
+
+    cluster_json_file = 'clusters_solicitacoes_defined.json'
+    cluster_csv_file = 'clusters_solicitacoes_defined.csv'
+    dataset_file = Path(cfg["paths"]["processed"]) / "primeiro_acesso_historico_202603041232_limpo_llm_clustered.csv"
+
+    shard_directory = Path(cfg["paths"]["raw"]) / "shards_h5"
+    shards_files = glob(os.path.join(shard_directory, '*.h5'))
+
+    files = glob(os.path.join(clusters_directory, "*.txt"))
+
+    df = pd.read_csv(dataset_file)
+
+    cluster_sizes = df.groupby("Cluster ID").size()
+
+    cluster_records = []
+
+    embeddings, texts = load_embedding_shards(shards_files)
+
+    aligned_embeddings, aligned_texts = align_to_df(
+        embeddings,
+        texts,
+        df
+    )
+
+    centroids = get_centroids(
+        aligned_embeddings,
+        df['Cluster ID'].values
+    )
+
+    centroid_similarities = centroids.dot(centroids.T) - np.eye(centroids.shape[0])
+
+    for file in files:
+
+        cluster_id = extract_cluster_id(file)
+
+        keywords, title, description, focus = load_and_parse_cluster_file(file)
+
+        most_similar = np.argmax(centroid_similarities[cluster_id])
+        similarity = centroid_similarities[cluster_id, most_similar]
+
+        record = {
+            "Cluster ID": cluster_id,
+            "Title": title,
+            "Size": int(cluster_sizes.get(cluster_id, 0)),
+            "Keywords": "; ".join(keywords),
+            "Description": description,
+            "Focus": focus,
+            "Most Similar Cluster": int(most_similar),
+            "Similarity": float(similarity)
+        }
+
+        cluster_records.append(record)
+
+    clusters_df = pd.DataFrame(cluster_records)
+
+    clusters_df = clusters_df.sort_values("Cluster ID")
+
+    clusters_df.to_csv(os.path.join(output_directory, cluster_csv_file), index=False)
+
+    clusters_df.to_json(
+        os.path.join(output_directory, cluster_json_file),
+        orient="records",
+        indent=2,
+        force_ascii=False
+    )
+
+    print("Dataset criado com sucesso!")
+
 if __name__ == '__main__':
+    os.chdir('..')
     main()
+    json_converter()
