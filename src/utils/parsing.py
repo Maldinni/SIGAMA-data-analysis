@@ -31,6 +31,7 @@ def load_config(args: argparse.Namespace) -> Dict[str, Any]:
     initial_embedding_file = load_toml(args.initial_embedding)
     graph_construction_file = load_toml(args.clustering)
     cluster_definition_file = load_toml(args.semantic)
+    trends_file = load_toml(args.semantic)
 
     cfg = {
         "paths": dirs_file["paths"],
@@ -39,6 +40,7 @@ def load_config(args: argparse.Namespace) -> Dict[str, Any]:
         "community_detection": graph_construction_file["community_detection"],
         "definition": cluster_definition_file["definition"],
         "llm": cluster_definition_file["llm"],
+        "trends": trends_file["trends"],
     }
 
     return cfg

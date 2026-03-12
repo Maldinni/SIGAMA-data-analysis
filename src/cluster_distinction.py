@@ -48,7 +48,7 @@ def main():
     processed_path = Path(cfg["paths"]["processed"])
     output_path = Path(cfg["paths"]["output"])
 
-    news_file = processed_path / "articles_merged_cleaned_clustered.csv"
+    news_file = processed_path / "primeiro_acesso_historico_202603041232_limpo_llm_clustered.csv"
     clusters_file = processed_path / "clusters_solicitacoes_defined.csv"
 
     output_dir = output_path / "cluster_distinctions"
@@ -76,7 +76,7 @@ def main():
     )
 
     labels = news_df["Cluster ID"].values
-    texts = news_df["text"].values
+    texts = news_df["ds_observacao"].values
 
     print("Iniciando distinção entre clusters...")
 
@@ -134,7 +134,7 @@ def json_converter():
     processed_path = Path(cfg["paths"]["processed"])
     output_path = Path(cfg["paths"]["output"])
 
-    clusters_file = processed_path / "clusters_defined.csv"
+    clusters_file = processed_path / "clusters_solicitacoes_defined.csv"
     cluster_df = pd.read_csv(clusters_file)
 
     distinction_dir = output_path / "cluster_distinctions"
@@ -162,12 +162,13 @@ def json_converter():
         how="left"
     )
 
-    output_file = processed_path / "clusters_defined_distinguished.csv"
+    output_file = processed_path / "clusters_solicitacoes_defined_distinguished.csv"
 
     final_df.to_csv(output_file, index=False)
 
     print("Dataset final criado.")
 
 if __name__ == '__main__':
+    os.chdir("..")
     main()
     json_converter()
