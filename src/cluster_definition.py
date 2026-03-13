@@ -38,9 +38,9 @@ def main():
                 Descrição:
                 1-2 frases.
 
-                Foco: 
+                Foco:
                 Escolha 1-3 das opções abaixo.
-                Termo de compromisso | Identidade | RG | Comprovante de endereço | Email | Assinatura | Procuração | CNPJ | Documento ilegível | Documento incompleto                
+                Erro no sistema | Emissão de GTA | Cadastro de produtor ou propriedade | Atualização ou correção de dados | Problema em relatórios ou cálculos | Pagamentos, boletos ou taxas | Permissões ou acesso de usuário | Integração com sistemas externos (SEFAZ etc.) | Solicitação de melhoria no sistema | Configuração ou infraestrutura do sistema | Cancelamento ou exclusão de registros
 
                 Textos:
                 {articles}
@@ -64,7 +64,7 @@ def main():
     cluster_files = glob(os.path.join(cluster_directory, "cluster_*.csv"))
     output_directory = f'{cfg["paths"]["output"]}'
 
-    solicitacoes_file = Path(cfg["paths"]["processed"]) / "primeiro_acesso_historico_202603041232_limpo_llm_clustered.csv"
+    solicitacoes_file = Path(cfg["paths"]["processed"]) / "chamado_abrir_202603041306_limpo_clustered.csv"
 
     solicitacoes_df = pd.read_csv(solicitacoes_file)
 
@@ -111,7 +111,7 @@ def main():
 
         cluster_df = pd.read_csv(cluster_file)
 
-        cluster_articles = cluster_df["ds_observacao"].dropna().values
+        cluster_articles = cluster_df["ds_problema"].dropna().values
 
         number_of_articles = min(
             cfg['definition']['max_article_number'],
@@ -122,7 +122,7 @@ def main():
 
         cluster_embeddings = aligned_embeddings[cluster_mask]
 
-        cluster_texts = solicitacoes_df.loc[cluster_mask, "ds_observacao"].values
+        cluster_texts = solicitacoes_df.loc[cluster_mask, "ds_problema"].values
 
         cluster_articles = get_representative_articles(
             centroids[label],
@@ -153,9 +153,9 @@ def json_converter():
     clusters_directory = f'{cfg["paths"]["output"]}'
     output_directory = f'{cfg["paths"]["processed"]}'
 
-    cluster_json_file = 'clusters_solicitacoes_defined.json'
-    cluster_csv_file = 'clusters_solicitacoes_defined.csv'
-    dataset_file = Path(cfg["paths"]["processed"]) / "primeiro_acesso_historico_202603041232_limpo_llm_clustered.csv"
+    cluster_json_file = 'clusters_open_tickets_defined.json'
+    cluster_csv_file = 'clusters_open_tickets_defined.csv'
+    dataset_file = Path(cfg["paths"]["processed"]) / "chamado_abrir_202603041306_limpo_clustered.csv"
 
     shard_directory = Path(cfg["paths"]["raw"]) / "shards_h5"
     shards_files = glob(os.path.join(shard_directory, '*.h5'))

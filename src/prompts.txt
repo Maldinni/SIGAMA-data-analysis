@@ -1,0 +1,139 @@
+prompt de cluster definition de solicitacoes:
+
+                Leia os textos abaixo e identifique o tema principal.
+
+                Use apenas informações dos textos.
+
+                Saída:
+
+                Palavras-chave:
+                - 
+                - 
+                - 
+                - 
+                - 
+
+                Título:
+
+                Descrição:
+                1-2 frases.
+
+                Foco: 
+                Escolha 1-3 das opções abaixo.
+                Termo de compromisso | Identidade | RG | Comprovante de endereço | Email | Assinatura | Procuração | CNPJ | Documento ilegível | Documento incompleto                
+
+                Textos:
+                {articles}
+
+prompt de cluster definition de chamados abrir:
+
+                Leia os textos abaixo e identifique o tema principal.
+
+                Use apenas informações dos textos.
+
+                Saída:
+
+                Palavras-chave:
+                - 
+                - 
+                - 
+                - 
+                - 
+
+                Título:
+
+                Descrição:
+                1-2 frases.
+
+                Foco:
+                Escolha 1-3 das opções abaixo.
+                Erro no sistema | Emissão de GTA | Cadastro de produtor ou propriedade | Atualização ou correção de dados | Problema em relatórios ou cálculos | Pagamentos, boletos ou taxas | Permissões ou acesso de usuário | Integração com sistemas externos (SEFAZ etc.) | Solicitação de melhoria no sistema | Configuração ou infraestrutura do sistema | Cancelamento ou exclusão de registros
+
+                Textos:
+                {articles}
+
+prompt de extract_trends de solicitacoes:
+            Compare dois conjuntos de observações sobre recusas de solicitação de acesso ao sistema.
+
+            Conjunto 1: observações antigas (antes de {date})
+            Conjunto 2: observações recentes (depois de {date})
+
+            Identifique mudanças nos motivos de recusa e nos documentos envolvidos.
+
+            Considere:
+            - Motivos de recusa (ex: documentação incompleta, termo não assinado, identidade faltando)
+            - Documentos ou elementos citados (ex: termo de compromisso, comprovante de endereço, documentos pessoais)
+
+            Saída:
+
+            Motivos de recusa em alta:
+            -
+            -
+            -
+
+            Documentos ou elementos mais citados recentemente:
+            -
+            -
+            -
+
+            Motivos de recusa em queda:
+            -
+            -
+            -
+
+            Documentos ou elementos menos citados:
+            -
+            -
+            -
+
+            Observações antigas:
+            {old_news}
+
+            Observações recentes:
+            {recent_news}
+
+prompt de extract_trends de chamados abrir:
+
+            Compare dois conjuntos de observações sobre recusas de solicitação de acesso ao sistema.
+
+            Conjunto 1: observações antigas (antes de {date})
+            Conjunto 2: observações recentes (depois de {date})
+
+            Identifique mudanças nos motivos de recusa e nos documentos envolvidos.
+
+            Considere:
+            - Tipos de problemas técnicos (ex: erro ao salvar, sistema não encontra cadastro, inconsistência de dados, falha na emissão de documentos, erro de processamento).
+
+            - Funcionalidades ou módulos do sistema citados (ex: emissão de GTA, cadastro de produtor, vacinação, propriedade, DARE, login/acesso).
+
+            - Operações do usuário que falham (ex: cadastrar, emitir, salvar, imprimir, consultar, atualizar dados).
+
+            - Elementos ou entidades envolvidas (ex: CPF, produtor, propriedade, rebanho, vacinação, documentos, pagamento).
+
+            Saída:
+
+            Problemas técnicos em alta recentemente:
+            -
+            -
+            -
+
+            Funcionalidades ou módulos mais citados recentemente:
+            -
+            -
+            -
+
+            Problemas técnicos em queda:
+            -
+            -
+            -
+
+            Funcionalidades ou módulos menos citados:
+            -
+            -
+            -
+
+            Observações antigas:
+            {old_news}
+
+            Observações recentes:
+            {recent_news}

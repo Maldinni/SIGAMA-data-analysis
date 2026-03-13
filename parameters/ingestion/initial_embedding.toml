@@ -1,0 +1,6 @@
+model = 'all-MiniLM-L6-v2'
+items_per_shard = 40
+
+[api_calls]
+sleep_time = 1.5
+batch_size = 40

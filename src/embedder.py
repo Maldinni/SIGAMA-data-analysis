@@ -34,7 +34,7 @@ def main():
     if not os.path.exists(cleaned_directory):
         print(f"Erro: O diretório {cleaned_directory} não existe.")
     else:
-        cleaned_files = glob.glob(os.path.join(cleaned_directory, 'primeiro_acesso_historico_202603041232_limpo_llm.csv'))
+        cleaned_files = glob.glob(os.path.join(cleaned_directory, 'chamado_abrir_202603041306_limpo.csv'))
         print(f"Arquivos encontrados no diretório de processados: {cleaned_files}")
 
     # Se não houver arquivos CSV, aparece um erro
@@ -56,7 +56,7 @@ def main():
     processed = load_processed_documents(processed_path)
 
     # Remove already embedded articles from the dataframe
-    df = df[~df['id_primeiro_acesso_historico'].isin(processed)]
+    df = df[~df['id'].isin(processed)]
 
     # Ensure embedding output directory exists
     os.makedirs(embedded_directory, exist_ok=True)
@@ -73,13 +73,13 @@ def main():
         text_embeddings = Embeddings()
 
         selection = df.iloc[start:end]
-        texts = selection['ds_observacao'].apply(lambda x: str(x) if isinstance(x, (str, int, float)) else '').tolist()
+        texts = selection['ds_problema'].apply(lambda x: str(x) if isinstance(x, (str, int, float)) else '').tolist()
         
         # Generate embeddings for texts
         embedded_texts = embedding_model.embed_documents(texts)
 
         # Store PMIDs and embeddings
-        text_embeddings.ids = selection['id_primeiro_acesso_historico'].tolist()
+        text_embeddings.ids = selection['id'].tolist()
         text_embeddings.texts = texts
     
         text_embeddings.embeddings = embedded_texts

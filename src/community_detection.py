@@ -24,7 +24,7 @@ def main():
     cluster_input_directory = f'{cfg["paths"]["processed"]}'
     cluster_output_directory = f'{cfg["paths"]["processed"]}/separated clusters'
 
-    csv_file = os.path.join(csv_directory, 'primeiro_acesso_historico_202603041232_limpo_llm.csv')
+    csv_file = os.path.join(csv_directory, 'chamado_abrir_202603041306_limpo.csv')
     graph_file = os.path.join(graph_directory, 'article_similarity.graphml')
 
     print('loading graph')
@@ -82,7 +82,7 @@ def main():
 
     print('saving cluster')
     df = pd.read_csv(csv_file)
-    df['Cluster ID'] = df['ds_observacao'].map(text_cluster)
+    df['Cluster ID'] = df['ds_problema'].map(text_cluster)
 
     new_csv_file = csv_file.replace('.csv', '_clustered.csv')
     df.to_csv(new_csv_file, index=False)
@@ -90,7 +90,7 @@ def main():
     cluster_input_directory = Path(cluster_input_directory)
     cluster_output_directory = Path(cluster_output_directory)
 
-    cluster_separated_file = os.path.join(cluster_input_directory, 'primeiro_acesso_historico_202603041232_limpo_llm_clustered.csv')
+    cluster_separated_file = os.path.join(cluster_input_directory, 'chamado_abrir_202603041306_limpo_clustered.csv')
 
     df_organized = pd.read_csv(cluster_separated_file)
 

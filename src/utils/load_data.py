@@ -153,5 +153,5 @@ def align_to_df(embeddings, texts, df):
     """
     texts = np.array(texts)
     text_to_index = {text: idx for idx, text in enumerate(texts)}
-    ordered_indices = [text_to_index[text] for text in df['ds_observacao'].values]
+    ordered_indices = [text_to_index[text] for text in df['ds_problema'].values]
     return embeddings[ordered_indices], texts[ordered_indices]

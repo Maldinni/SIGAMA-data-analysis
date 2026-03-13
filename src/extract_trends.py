@@ -19,39 +19,43 @@ def main():
     TRENDS_PROMPT = PromptTemplate(
         input_variables=["title", "date", "old_news", "recent_news"],
         template="""
-            Compare dois conjuntos de textos sobre o tema "{title}".
+            Compare dois conjuntos de observações sobre recusas de solicitação de acesso ao sistema.
 
-            Conjunto 1: textos antigos (antes de {date})
-            Conjunto 2: textos recentes (depois de {date})
+            Conjunto 1: observações antigas (antes de {date})
+            Conjunto 2: observações recentes (depois de {date})
 
-            Identifique diferenças entre os dois conjuntos.
+            Identifique mudanças nos motivos de recusa e nos documentos envolvidos.
+
+            Considere:
+            - Motivos de recusa (ex: documentação incompleta, termo não assinado, identidade faltando)
+            - Documentos ou elementos citados (ex: termo de compromisso, comprovante de endereço, documentos pessoais)
 
             Saída:
 
-            Narrativas em alta:
+            Motivos de recusa em alta:
             -
             -
             -
 
-            Atores em alta:
+            Documentos ou elementos mais citados recentemente:
             -
             -
             -
 
-            Narrativas em baixa:
+            Motivos de recusa em queda:
             -
             -
             -
 
-            Atores em baixa:
+            Documentos ou elementos menos citados:
             -
             -
             -
 
-            Textos antigos:
+            Observações antigas:
             {old_news}
 
-            Textos recentes:
+            Observações recentes:
             {recent_news}
             """
     )

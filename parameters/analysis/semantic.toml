@@ -1,0 +1,43 @@
+[definition]
+max_article_number = 9
+required_fields = ['Palavras-chave', 'Título', 'Descrição', 'Foco']
+
+[distinction]
+max_article_number = 9
+required_fields = ['Características Distintivas']
+
+[questions]
+required_fields = ['Questões em Aberto']
+
+[trends]
+max_article_number = 13
+older_cutoff = 2022
+recent_cutoff = 2026
+required_fields = [
+                 'Narrativas Emergentes',
+                 'Atores Emergentes',
+                 'Narrativas em Declínio',
+                 'Atores em Declínio'
+                 ]
+
+[dimensions]
+max_article_number = 200
+older_cutoff = 2015
+recent_cutoff = 2026
+required_fields = [
+                'Dimensão 1 - Posicionamento Social e Político',
+                'Dimensão 2 - Tom Emocional',
+                'Dimensão 3 - Enquadramento do Problema',
+                'Dimensão 4 - Centralidade de Atores Sociais',
+                'Dimensão 5 - Foco em Instituições ou Indivíduos',
+                'Dimensão 6 - Alcance Nacional ou Internacional',
+                'Dimensão 7 - Evento Pontual ou Problema Estrutural',
+                'Dimensão 8 - Uso de Evidências e Fontes',
+                'Dimensão 9 - Tipo de Veículo de Mídia'
+        ]
+
+[llm]
+temperature = 0.1
+model_name = 'qwen2.5:7b'
+delay = 0.5
+retries = 5
